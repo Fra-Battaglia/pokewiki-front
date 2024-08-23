@@ -1,0 +1,61 @@
+@use './partials/variables' as*;
+
+body {
+	background-color: $background-color;
+	color: #FFFFFF;
+}
+
+.type.grass {
+	background-color: $type-grass;
+}
+.type.poison {
+	background-color: $type-poison;
+}
+.type.fire {
+	background-color: $type-fire;
+}
+.type.flying {
+	background-color: $type-flying;
+}
+.type.water {
+	background-color: $type-water;
+}
+.type.bug {
+	background-color: $type-bug;
+}
+.type.normal {
+	background-color: $type-normal;
+}
+.type.electric {
+	background-color: $type-electric;
+}
+.type.ground {
+	background-color: $type-ground;
+}
+.type.fairy {
+	background-color: $type-fairy;
+}
+.type.fighting {
+	background-color: $type-fighting;
+}
+.type.psychic {
+	background-color: $type-psychic;
+}
+.type.rock {
+	background-color: $type-rock;
+}
+.type.ghost {
+	background-color: $type-ghost;
+}
+.type.ice {
+	background-color: $type-ice;
+}
+.type.dragon {
+	background-color: $type-dragon;
+}
+.type.dark {
+	background-color: $type-dark;
+}
+.type.steel {
+	background-color: $type-steel;
+}

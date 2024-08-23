@@ -1,0 +1,45 @@
+@font-face {
+	font-family: Flexo;
+	font-weight: 100;
+	src: url(./assets/fonts/Flexo_Thin.ttf);
+  }
+  
+  @font-face {
+	font-family: Flexo;
+	font-weight: 300;
+	src: url(./assets/fonts/Flexo_Light.ttf);
+  }
+  
+  @font-face {
+	font-family: Flexo;
+	font-weight: 400;
+	src: url(./assets/fonts/Flexo_Regular.ttf);
+  }
+  
+  @font-face {
+	font-family: Flexo;
+	font-weight: 500;
+	src: url(./assets/fonts/Flexo_Medium.ttf);
+  }
+  
+  @font-face {
+	font-family: Flexo;
+	font-weight: 600;
+	src: url(./assets/fonts/Flexo_SemiBold.ttf);
+  }
+  
+  @font-face {
+	font-family: Flexo;
+	font-weight: 700;
+	src: url(./assets/fonts/Flexo_Bold.ttf);
+  }
+  
+  * {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+  }
+  
+  body {
+	font-family: Flexo;
+  }
