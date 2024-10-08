@@ -2,52 +2,52 @@ import { useEffect, useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
-import Card from './components/card'
-import Jumbotron from './components/jumbotron'
+import Card from './components/Card.jsx'
+import Jumbotron from './components/Jumbotron.jsx'
 import axios from 'axios'
 import store from './store'
+import PokemonDetail from './components/PokemonDetail.jsx'
 
 function App() {
-	const [pokemons, set_pokemons] = useState(null);
+	const [pokemons, set_pokemons] = useState([]);
+	const [loading, set_loading] = useState(true);
 
-	function get_pokemons() {
-		axios.get('https://pokeapi.co/api/v2/pokemon?limit=107&offset=386').then((response) => {
-			set_pokemons(response.data)
-			store.pokemon_info = response.data.results;
-			let pokemons = store.pokemon_info
+	async function get_pokemons() {
+		try {
+			const response = await axios.get('https://pokeapi.co/api/v2/pokemon?limit=107&offset=386');
+			const pokemon_results = response.data.results;
+
+			const pokemon_details_promises = pokemon_results.map(pokemon => 
+				axios.get(pokemon.url).then(response => ({
+					...response.data,
+					url: pokemon.url
+				}))
+			);
 			
-			// pokemons.forEach(pokemon => {
-			// 	axios.get(pokemon.url).then((response) => {
-			// 		let pokemon_info = response.data
-			// 		pokemon.pokemon_info = pokemon_info
-			// 	})
-			// 	.catch((error) => {
-			// 		console.error("Errore nel recupero dei dati del Pokémon:", error);
-			// 	})
-			// });
-			
-			// pokemons = response.data.results
-			// console.log(pokemons);
-		}).catch((error) => {
+			const detailed_pokemons = await Promise.all(pokemon_details_promises);
+			set_pokemons(detailed_pokemons);
+			set_loading(false)
+		} catch(error) {
 			console.error("Errore nel recupero dei dati del Pokémon:", error);
-		});
+		};
 	}
 
 	useEffect(() => {get_pokemons();}, []);
 
 	return (
 		<>
-			<header></header>
 			<Jumbotron />
 			<main className='py-8 text-center'>
 				<h1 className="text-4xl font-bold">POKÉDEX</h1>
-				<div className="grid grid-cols-1 md:grid-cols-4 container my-0 mx-auto gap-4">
-					{store.pokemon_info.map((item) => (
+				<div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 container my-0 mx-auto gap-4">
+					{pokemons.map((item) => (
 						<Card 
 							key={item?.url}
-							url={item?.url}
 							name={item?.name}
-							image={item?.pokemon_info?.sprites?.other?.dream_world?.front_default}
+							image={item?.sprites?.other?.home?.front_default}
+							types={item?.types}
+							height={item?.height}
+							weight={item?.weight}
 						/>
 					))}
 					{/* <Card name={store.pokemon_info.name} image={store.pokemon_info?.sprites?.other.dream_world.front_default} />
