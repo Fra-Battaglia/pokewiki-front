@@ -39,22 +39,26 @@ function App() {
 			<Jumbotron />
 			<main className='py-8 text-center'>
 				<h1 className="text-4xl font-bold">POKÉDEX</h1>
+				{loading ? (<div>loading...</div>) : (
 				<div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 container my-0 mx-auto gap-4">
-					{pokemons.map((item) => (
+						{pokemons.map((item) => 
+							!item ? (<div>loading...</div>) : (
 						<Card 
-							key={item?.url}
-							name={item?.name}
-							image={item?.sprites?.other?.home?.front_default}
-							types={item?.types}
-							height={item?.height}
-							weight={item?.weight}
+									key={item.id}
+									name={item.name}
+									image={item.sprites.other.home.front_default}
+									types={item.types}
+									height={item.height}
+									weight={item.weight}
 						/>
-					))}
+							)
+						)}
 					{/* <Card name={store.pokemon_info.name} image={store.pokemon_info?.sprites?.other.dream_world.front_default} />
 					<Card name={store.pokemon_info.name} image={store.pokemon_info?.sprites?.other.dream_world.front_default} />
 					<Card name={store.pokemon_info.name} image={store.pokemon_info?.sprites?.other.dream_world.front_default} /> */}
 					{/* <h1>{store.pokemon_info.name}</h1> */}			
 				</div>
+				)}
 			</main>
 			<footer></footer>
 		</>
