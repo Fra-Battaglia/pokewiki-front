@@ -9,7 +9,7 @@ function Jumbotron(props) {
 
 	return (
 		<>
-			<section className="jumbotron h-screen bg-fixed">
+			<section className="jumbotron h-screen bg-fixed bg-center">
 				<Header />
 				<div className="container my-0 mx-auto h-full">
 					<div className="h-full flex items-center">

@@ -20,7 +20,7 @@ function Move(props) {
 
 	return (
 		<>
-			<div className="w-full rounded p-4 bg-slate-600">
+			<div className="w-full p-4 bg-black/[.4] border">
 				<div className='font-bold'>{props?.name}</div>
 				<p>{move?.effect_entries[0]?.short_effect}</p>
 				<div className={'type inline-block rounded px-4 font-bold ' + (move?.type ? `${move?.type?.name}` : "")}>{move?.type?.name}</div>

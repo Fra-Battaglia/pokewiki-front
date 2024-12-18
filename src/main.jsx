@@ -4,6 +4,8 @@ import App from './App.jsx'
 import './index.css'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import PokemonDetail from './components/PokemonDetail.jsx'
+import Generation from './components/Generation.jsx'
+import Generations from './components/Generations.jsx'
 
 const router = createBrowserRouter([
   {
@@ -11,7 +13,15 @@ const router = createBrowserRouter([
     element: <App></App>,
   },
   {
-    path: "/:pokemonID",
+    path: "/generations/",
+    element: <Generations />
+  },
+  {
+    path: "/generations/:generationID",
+    element: <Generation />
+  },
+  {
+    path: "/pokemons/:pokemonID",
     element: <PokemonDetail />
   }
 ])
