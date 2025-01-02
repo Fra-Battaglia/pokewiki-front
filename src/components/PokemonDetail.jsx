@@ -34,19 +34,19 @@ function PokemonDetail(props) {
 	return (
 		<>
 			{loading ? (<div>loading...</div>) : (
-				<section className={"p-0.5 min-h-screen overflow-y-auto bg-gradient-to-r flex flex-col " + (pokemon.types[0] ? `from-[--type-${pokemon.types[0].type.name}]` : "") + " " + (pokemon.types[1] ? `to-[--type-${pokemon.types[1].type.name}]` : pokemon.types[0] ? `to-[--type-${pokemon.types[0].type.name}]` : "")}>
-					<div className="h-full bg-black/[.8] flex-grow">
+				<section className={"p-0.5 h-screen bg-gradient-to-r flex flex-col " + (pokemon.types[0] ? `from-[--type-${pokemon.types[0].type.name}]` : "") + " " + (pokemon.types[1] ? `to-[--type-${pokemon.types[1].type.name}]` : pokemon.types[0] ? `to-[--type-${pokemon.types[0].type.name}]` : "")}>
+					<div className="h-full bg-black/[.8] flex-grow overflow-auto">
 					<Header />
 						<div className="container my-8 mx-auto">
 							<div>
 								<Link to={-1}><button className="border border-white bg-black/[.4] flex gap-2 items-center justify-center self-center px-4 py-2 hover:underline" id='io'><FontAwesomeIcon icon={faArrowLeft} /> Back</button></Link>
-								<div className="flex gap-12 items-start">
-									<img src={pokemon.sprites.other.home.front_default} alt={pokemon.name} />
-									<div className="pokemon-info grow overflow-auto">
-										<h3 className='uppercase font-bold mb-4 text-3xl'>{pokemon.name}</h3>
+								<div className="flex items-start">
+									<div className="bg-black/[.4]"><img src={pokemon.sprites.other.home.front_default} alt={pokemon.name} /></div>
+									<div className="pokemon-info grow overflow-auto flex flex-col">
+										<h3 className='uppercase font-bold mb-4 text-6xl'>{pokemon.name}</h3>
 										<div className="types flex gap-4 mb-4">
 										{pokemon.types.map((item) => (
-											<div className={"type uppercase rounded py-0.5 px-4 font-bold " + item.type.name} key={item.type.name}>{item.type.name}</div>
+											<div className={"type uppercase rounded px-2 font-bold " + item.type.name} key={item.type.name}>{item.type.name}</div>
 										))}
 										</div>
 										<div className="stats">
@@ -54,12 +54,13 @@ function PokemonDetail(props) {
 												<p key={item.stat.name}>{item.stat.name}: {item.base_stat}</p>
 											))}
 										</div>
-										<div className="moves overflow-y-auto grid grid-cols-2 gap-4">
-											{pokemon.moves.map((item) => (
-												<Move key={item.move.url} name={item.move.name} url={item.move.url} />
-											))}
-										</div>
 									</div>
+								</div>
+								<h4 className='uppercase font-bold mb-4 text-4xl text-center'>MOVESET</h4>
+								<div className="moves overflow-y-auto grid grid-cols-2 lg:grid-cols-3 gap-4 grow">
+									{pokemon.moves.map((item) => (
+										<Move key={item.move.url} name={item.move.name} url={item.move.url} />
+									))}
 								</div>
 							</div>
 						</div>
