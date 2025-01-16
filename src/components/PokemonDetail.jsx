@@ -10,15 +10,24 @@ import { width } from '@fortawesome/free-brands-svg-icons/fa42Group';
 
 function PokemonDetail(props) {
 	const [pokemon, set_pokemon] = useState(null);
+	const [pokemon_species, set_pokemon_species] = useState(null);
 	const [loading, set_loading] = useState(true);
 	const { pokemonID } = useParams();
 
 
-	function get_pokemon() {		
-		axios.get('https://pokeapi.co/api/v2/pokemon/' + pokemonID).then((response) => {
-			set_pokemon(response.data)
-			set_loading(false)
-		})
+	async function get_pokemon_info() {	
+		try {
+			axios.get('https://pokeapi.co/api/v2/pokemon/' + pokemonID).then(async (response) => {
+				const species_data = await axios.get(response.data.species.url);				
+
+				set_pokemon(response.data)
+				set_pokemon_species(species_data.data)
+				set_loading(false)
+			})
+		} catch (error) {
+			console.error(`Errore nel recupero del pokemon:`, error);
+			return null;
+		}
 	}
 
 	function toTitleCase(str) {
@@ -28,7 +37,7 @@ function PokemonDetail(props) {
 		);
 	  }
 
-	useEffect(() => {get_pokemon();}, []);
+	useEffect(() => {get_pokemon_info();}, []);
 
 	document.title = !loading ?  "PokeWiki - " + toTitleCase(pokemon.name) : "PokeWiki";
 	
@@ -50,17 +59,18 @@ function PokemonDetail(props) {
 											<div className={"type uppercase rounded px-2 font-bold " + item.type.name} key={item.type.name}>{item.type.name}</div>
 										))}
 										</div>
-										<p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Debitis, ducimus recusandae. Aspernatur deserunt vero vitae commodi autem repellat, vel id sed reprehenderit explicabo consectetur aliquid ex alias. Doloribus, praesentium facere?</p>
+
+										<p>{pokemon_species.flavor_text_entries.filter((text) => text.language.name == "en")[0].flavor_text}</p>
+
 										<h4 className='uppercase font-bold text-4xl text-center'>STATISTICS</h4>
 										<div className="stats grid grid-cols-3 gap-4">
 											{pokemon.stats.map((item) => (
 												<div key={item.stat.name} className="stat">
-														<p className='text-xl'>{item.stat.name}: <strong>{item.base_stat}</strong></p>
-														<div className='bg-black/[.4] h-4'>
-															<div style={{width: item.base_stat / 255 * 100 + "%"}} className={"h-full bg-gradient-to-r " + (pokemon.types[0] ? `from-[--type-${pokemon.types[0].type.name}]` : "") + " " + (pokemon.types[1] ? `to-[--type-${pokemon.types[1].type.name}]` : pokemon.types[0] ? `to-[--type-${pokemon.types[0].type.name}]` : "")}></div>
-														</div>
+													<p className='text-xl'>{item.stat.name}: <strong>{item.base_stat}</strong></p>
+													<div className='bg-black/[.4] h-4'>
+														<div style={{width: item.base_stat / 255 * 100 + "%"}} className={"h-full bg-gradient-to-r " + (pokemon.types[0] ? `from-[--type-${pokemon.types[0].type.name}]` : "") + " " + (pokemon.types[1] ? `to-[--type-${pokemon.types[1].type.name}]` : pokemon.types[0] ? `to-[--type-${pokemon.types[0].type.name}]` : "")}></div>
 													</div>
-												</>
+												</div>
 											))}
 										</div>
 									</div>
