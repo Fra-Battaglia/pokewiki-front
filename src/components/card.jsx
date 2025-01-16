@@ -12,16 +12,16 @@ function Card(props) {
 					{/* <div className="card-heder flex justify-between">
 						<h1 className='uppercase font-bold'>N° {props.id}</h1>
 					</div> */}
-					<Link to={"/pokemons/" + props.name}>
-						<div className='hover:bg-black/[.4] border hover:border-white border-transparent m-5 max-h-full'><img src={props.image} alt={props.name} className='p-5' /></div>
-					</Link>
+						<div className='hover:bg-black/[.4] border hover:border-white border-transparent m-5 max-h-full'>
+							<Link to={"/pokemons/" + props.id}><img src={props.image} alt={props.name} className='p-5' /></Link>
+						</div>
 					
 					<div className="pokemon-data h-full flex flex-col gap-4 py-4">	
 						<h4>{props.id}</h4>
 						<h1 className='uppercase font-bold text-center text-3xl leading-none flex-grow'>{props.name}</h1>
 						<div className="types flex gap-4 justify-center">
 							{props.types.map((item) => (
-								<div className={"type uppercase rounded py-0.5 px-4 font-bold " + item.type.name} key={item.type.name}>{item.type.name}</div>
+								<div className={"type uppercase rounded px-2 font-bold " + item.type.name} key={item.type.name}>{item.type.name}</div>
 							))}
 						</div>
 						<div className="flex gap-4 justify-center">

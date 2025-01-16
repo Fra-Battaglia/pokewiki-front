@@ -44,8 +44,8 @@ function PokemonDetail(props) {
 								<div className="flex items-start gap-4">
 									<div className="bg-black/[.4] shrink-0"><img src={pokemon.sprites.other.home.front_default} alt={pokemon.name} /></div>
 									<div className="pokemon-info grow overflow-auto flex flex-col gap-4">
-										<h3 className='uppercase font-bold mb-4 text-6xl text-center'>{pokemon.name}</h3>
-										<div className="types flex gap-4">
+										<h3 className='uppercase font-bold text-6xl text-center'>{pokemon.name}</h3>
+										<div className="types flex gap-4 text-2xl mx-auto my-0">
 										{pokemon.types.map((item) => (
 											<div className={"type uppercase rounded px-2 font-bold " + item.type.name} key={item.type.name}>{item.type.name}</div>
 										))}
@@ -54,9 +54,8 @@ function PokemonDetail(props) {
 										<h4 className='uppercase font-bold text-4xl text-center'>STATISTICS</h4>
 										<div className="stats grid grid-cols-3 gap-4">
 											{pokemon.stats.map((item) => (
-												<>
-													<div className="stat">
-														<p key={item.stat.name}>{item.stat.name}: <strong>{item.base_stat}</strong></p>
+												<div key={item.stat.name} className="stat">
+														<p className='text-xl'>{item.stat.name}: <strong>{item.base_stat}</strong></p>
 														<div className='bg-black/[.4] h-4'>
 															<div style={{width: item.base_stat / 255 * 100 + "%"}} className={"h-full bg-gradient-to-r " + (pokemon.types[0] ? `from-[--type-${pokemon.types[0].type.name}]` : "") + " " + (pokemon.types[1] ? `to-[--type-${pokemon.types[1].type.name}]` : pokemon.types[0] ? `to-[--type-${pokemon.types[0].type.name}]` : "")}></div>
 														</div>
