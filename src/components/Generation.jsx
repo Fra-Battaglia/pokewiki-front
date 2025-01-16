@@ -14,33 +14,52 @@ function Generation() {
 
 	async function get_pokemons() {
 		try {
-			// const response = await axios.get('https://pokeapi.co/api/v2/pokemon?limit=107&offset=386');
-			// const pokemon_results = response.data.results;
 			
 			const response = await axios.get('https://pokeapi.co/api/v2/generation/' + generationID);
-			
-			// Pokemon spieces details
 			const pokemon_results = response.data.pokemon_species;
-			const pokemon_spieces_details_promises = pokemon_results.map(pokemon => 
-				axios.get(pokemon.url).then(response => ({
-					...response.data,
-					url: pokemon.url
-				}))
-			);
-			
-			const pokemons_spieces_details = await Promise.all(pokemon_spieces_details_promises);
-			
-			// Pokemon details
-			const pokemon_details_promises = pokemons_spieces_details.map(pokemon => 
-				axios.get(pokemon.varieties[0].pokemon.url).then(response => ({
-					...response.data,
-					url: pokemon.url
-				}))
-			);
-			
-			const pokemons_details = await Promise.all(pokemon_details_promises);
 
-			set_pokemons(pokemons_details);
+			const pokemons_details = await Promise.all(
+				pokemon_results.map(async (pokemon) => {
+					try {
+						const species_response = await axios.get(pokemon.url);
+						const variety_response = await axios.get(species_response.data.varieties
+							.filter((variety) => variety.is_default)
+							.map((variety) => variety.pokemon.url)
+						);
+						
+						return {...variety_response.data, species_url: pokemon.url};
+
+					} catch (error) {
+						console.error(`Errore nel recupero di ${pokemon.name}:`, error);
+						return null;
+					}
+				})
+			)
+			
+			// // Pokemon spieces details
+			// const pokemon_spieces_details_promises = pokemon_results.map(pokemon => 
+			// 	axios.get(pokemon.url).then(response => ({
+			// 		...response.data,
+			// 		url: pokemon.url
+			// 	}))
+			// );
+			
+			// const pokemons_spieces_details = await Promise.all(pokemon_spieces_details_promises);
+			
+			// // Pokemon details
+			// const pokemon_details_promises = pokemons_spieces_details.map(pokemon => 
+			// 	axios.get(pokemon.varieties
+			// 		.filter((variety) => variety.is_default)
+			// 		.map((variety) => variety.pokemon.url)
+			// 	).then(response => ({
+			// 		...response.data,
+			// 		url: pokemon.url
+			// 	}))
+			// );
+			
+			// const pokemons_details = await Promise.all(pokemon_details_promises);
+
+			set_pokemons(pokemons_details.filter(Boolean));
 			set_loading(false)
 		} catch(error) {
 			console.error("Errore nel recupero dei dati del Pokémon:", error);
