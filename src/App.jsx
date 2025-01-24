@@ -9,10 +9,10 @@ function App() {
 	return (
 		<>
 			<Jumbotron />
-			<main className='py-8 text-center'>
+			{/* <main className='py-8 text-center'>
 				<h1 className="text-4xl font-bold">POKÉWIKI</h1>
 				
-			</main>
+			</main> */}
 			<footer></footer>
 		</>
 	)

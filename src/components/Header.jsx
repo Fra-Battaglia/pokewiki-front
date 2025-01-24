@@ -8,8 +8,13 @@ function Header(props) {
 	return (
 		<>
 			<header>
-				<div className="container flex justify-between items-center mx-auto my-0">
-					<img src="/src/assets/img/pokeball.svg" alt="Logo" className='w-16' />
+				<div className="container flex justify-between items-center mx-auto py-4">
+					<Link to={"/"}>
+						<div className='flex gap-4 font-bold text-3xl items-center'>
+							<img src="/src/assets/img/pokeball.svg" alt="Logo" className='h-[1.5em]' /><h1>POKÉWIKI</h1>
+						</div>
+					</Link>
+					
 					<nav>
 						<ul className='flex gap-4'>
 							<li>About us</li>

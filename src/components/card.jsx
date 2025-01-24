@@ -13,7 +13,7 @@ function Card(props) {
 						<h1 className='uppercase font-bold'>N° {props.id}</h1>
 					</div> */}
 						<div className='hover:bg-black/[.4] border hover:border-white border-transparent m-5 max-h-full'>
-							<Link to={"/pokemons/" + props.id}><img src={props.image} alt={props.name} className='p-5' /></Link>
+							<Link to={"/pokemons/" + props.name}><img src={props.image} alt={props.name} className='p-5' /></Link>
 						</div>
 					
 					<div className="pokemon-data h-full flex flex-col gap-4 py-4">	
