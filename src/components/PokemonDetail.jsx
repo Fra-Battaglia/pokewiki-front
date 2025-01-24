@@ -7,6 +7,7 @@ import { Link, useParams } from 'react-router-dom';
 import Move from './Move';
 import Header from './header';
 import { width } from '@fortawesome/free-brands-svg-icons/fa42Group';
+import Loading from './Loading';
 
 function PokemonDetail(props) {
 	const [pokemon, set_pokemon] = useState(null);
@@ -43,7 +44,7 @@ function PokemonDetail(props) {
 	
 	return (
 		<>
-			{loading ? (<div>loading...</div>) : (
+			{loading ? (<Loading />) : (
 				<section className={"p-0.5 h-screen bg-gradient-to-r flex flex-col " + (pokemon.types[0] ? `from-[--type-${pokemon.types[0].type.name}]` : "") + " " + (pokemon.types[1] ? `to-[--type-${pokemon.types[1].type.name}]` : pokemon.types[0] ? `to-[--type-${pokemon.types[0].type.name}]` : "")}>
 					<div className="h-full bg-black/[.8] flex-grow overflow-auto">
 					<Header />
