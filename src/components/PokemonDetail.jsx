@@ -13,6 +13,7 @@ function PokemonDetail(props) {
 	const [pokemon, set_pokemon] = useState(null);
 	const [pokemon_species, set_pokemon_species] = useState(null);
 	const [loading, set_loading] = useState(true);
+	const [shiny, set_shiny] = useState(false);
 	const { pokemonID } = useParams();
 
 
@@ -38,6 +39,8 @@ function PokemonDetail(props) {
 		);
 	  }
 
+	function toggleShiny() {set_shiny(!shiny);}
+
 	useEffect(() => {get_pokemon_info();}, []);
 
 	document.title = !loading ?  "PokeWiki - " + toTitleCase(pokemon.name) : "PokeWiki";
@@ -52,7 +55,10 @@ function PokemonDetail(props) {
 							<div>
 								<Link to={-1}><button className="border border-white bg-black/[.4] flex gap-2 items-center justify-center self-center px-4 py-2 hover:underline" id='io'><FontAwesomeIcon icon={faArrowLeft} /> Back</button></Link>
 								<div className="flex items-start gap-4">
-									<div className="bg-black/[.4] shrink-0"><img src={pokemon.sprites.other.home.front_default} alt={pokemon.name} /></div>
+									<div className="bg-black/[.4] shrink-0 relative">
+										<img src="/src/assets/img/icons/sparks.svg" alt="shiny" id='shiny' className={'absolute top-4 right-4 w-12 m-2 ' + (!shiny ? 'opacity-50' : '')} onClick={toggleShiny} />
+										<img src={!shiny ? pokemon.sprites.other.home.front_default : pokemon.sprites.other.home.front_shiny} alt={pokemon.name} />
+									</div>
 									<div className="pokemon-info grow overflow-auto flex flex-col gap-4">
 										<h3 className='uppercase font-bold text-6xl text-center'>{pokemon.name}</h3>
 										<div className="types flex gap-4 text-2xl mx-auto my-0">
