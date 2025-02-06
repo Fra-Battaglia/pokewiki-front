@@ -48,8 +48,8 @@ function PokemonDetail(props) {
 	return (
 		<>
 			{loading ? (<Loading />) : (
-				<section className={"p-0.5 h-screen bg-gradient-to-r flex flex-col " + (pokemon.types[0] ? `from-[--type-${pokemon.types[0].type.name}]` : "") + " " + (pokemon.types[1] ? `to-[--type-${pokemon.types[1].type.name}]` : pokemon.types[0] ? `to-[--type-${pokemon.types[0].type.name}]` : "")}>
-					<div className="h-full bg-black/[.8] flex-grow overflow-auto">
+				<section className={"p-0.5 h-screen bg-linear-to-r flex flex-col " + (pokemon.types[0] ? `from-(--type-${pokemon.types[0].type.name})` : "") + " " + (pokemon.types[1] ? `to-(--type-${pokemon.types[1].type.name})` : pokemon.types[0] ? `to-(--type-${pokemon.types[0].type.name})` : "")}>
+					<div className="h-full bg-black/[.8] grow overflow-auto">
 					<Header />
 						<div className="container my-8 mx-auto">
 							<div>
@@ -63,7 +63,7 @@ function PokemonDetail(props) {
 										<h3 className='uppercase font-bold text-6xl text-center'>{pokemon.name}</h3>
 										<div className="types flex gap-4 text-2xl mx-auto my-0">
 										{pokemon.types.map((item) => (
-											<div className={"type uppercase rounded px-2 font-bold " + item.type.name} key={item.type.name}>{item.type.name}</div>
+											<div className={"type uppercase rounded-sm px-2 font-bold " + item.type.name} key={item.type.name}>{item.type.name}</div>
 										))}
 										</div>
 
@@ -75,7 +75,7 @@ function PokemonDetail(props) {
 												<div key={item.stat.name} className="stat">
 													<p className='text-xl'>{item.stat.name}: <strong>{item.base_stat}</strong></p>
 													<div className='bg-black/[.4] h-4'>
-														<div style={{width: item.base_stat / 255 * 100 + "%"}} className={"h-full bg-gradient-to-r " + (pokemon.types[0] ? `from-[--type-${pokemon.types[0].type.name}]` : "") + " " + (pokemon.types[1] ? `to-[--type-${pokemon.types[1].type.name}]` : pokemon.types[0] ? `to-[--type-${pokemon.types[0].type.name}]` : "")}></div>
+														<div style={{width: item.base_stat / 255 * 100 + "%"}} className={"h-full bg-linear-to-r " + (pokemon.types[0] ? `from-(--type-${pokemon.types[0].type.name})` : "") + " " + (pokemon.types[1] ? `to-(--type-${pokemon.types[1].type.name})` : pokemon.types[0] ? `to-(--type-${pokemon.types[0].type.name})` : "")}></div>
 													</div>
 												</div>
 											))}
