@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom'
 function Card(props) {
 	return (
 		<>
-			<div className={"pokemon-card p-0.5 bg-gradient-to-r " + (props.types[0] ? `from-[--type-${props.types[0].type.name}]` : "") + " " + (props.types[1] ? `to-[--type-${props.types[1].type.name}]` : props.types[0] ? `to-[--type-${props.types[0].type.name}]` : "")}>
+			<div className={"pokemon-card p-0.5 bg-linear-to-r " + (props.types[0] ? `from-(--type-${props.types[0].type.name})` : "") + " " + (props.types[1] ? `to-(--type-${props.types[1].type.name})` : props.types[0] ? `to-(--type-${props.types[0].type.name})` : "")}>
 				<div className='w-1/1 flex flex-col bg-black/[.8] relative h-full'>
 					{/* <div className="card-heder flex justify-between">
 						<h1 className='uppercase font-bold'>N° {props.id}</h1>
@@ -18,10 +18,10 @@ function Card(props) {
 					
 					<div className="pokemon-data h-full flex flex-col gap-4 py-4">	
 						<h4>{props.id}</h4>
-						<h1 className='uppercase font-bold text-center text-3xl leading-none flex-grow'>{props.name}</h1>
+						<h1 className='uppercase font-bold text-center text-3xl leading-none grow'>{props.name}</h1>
 						<div className="types flex gap-4 justify-center">
 							{props.types.map((item) => (
-								<div className={"type uppercase rounded px-2 font-bold " + item.type.name} key={item.type.name}>{item.type.name}</div>
+								<div className={"type uppercase rounded-sm px-2 font-bold " + item.type.name} key={item.type.name}>{item.type.name}</div>
 							))}
 						</div>
 						<div className="flex gap-4 justify-center">
