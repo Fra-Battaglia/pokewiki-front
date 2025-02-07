@@ -54,11 +54,20 @@ function PokemonDetail(props) {
 						<div className="container my-8 mx-auto">
 							<div>
 								<Link to={-1}><button className="border border-white bg-black/[.4] flex gap-2 items-center justify-center self-center px-4 py-2 hover:underline" id='io'><FontAwesomeIcon icon={faArrowLeft} /> Back</button></Link>
+								
+								{/* Pokemon data section */}
+
 								<div className="flex items-start gap-4">
+
+									{/* Sprite area */}
+
 									<div className="bg-black/[.4] shrink-0 relative">
 										<img src="/src/assets/img/icons/sparks.svg" alt="shiny" id='shiny' className={'absolute top-4 right-4 w-12 m-2 ' + (!shiny ? 'opacity-50' : '')} onClick={toggleShiny} />
 										<img src={!shiny ? pokemon.sprites.other.home.front_default : pokemon.sprites.other.home.front_shiny} alt={pokemon.name} />
 									</div>
+
+									{/* Pokemon Info */}
+
 									<div className="pokemon-info grow overflow-auto flex flex-col gap-4">
 										<h3 className='uppercase font-bold text-6xl text-center'>{pokemon.name}</h3>
 										<div className="types flex gap-4 text-2xl mx-auto my-0">
@@ -66,8 +75,9 @@ function PokemonDetail(props) {
 											<div className={"type uppercase rounded-sm px-2 font-bold " + item.type.name} key={item.type.name}>{item.type.name}</div>
 										))}
 										</div>
-
 										<p>{pokemon_species.flavor_text_entries.filter((text) => text.language.name == "en")[0].flavor_text}</p>
+
+										{/* Statistics */}
 
 										<h4 className='uppercase font-bold text-4xl text-center'>STATISTICS</h4>
 										<div className="stats grid grid-cols-3 gap-4">
@@ -80,14 +90,19 @@ function PokemonDetail(props) {
 												</div>
 											))}
 										</div>
+
 									</div>
 								</div>
+
+								{/* Moveset */}
+
 								<h4 className='uppercase font-bold mb-4 text-4xl text-center'>MOVESET</h4>
 								<div className="moves overflow-y-auto grid grid-cols-2 lg:grid-cols-3 gap-4 grow">
 									{pokemon.moves.map((item) => (
 										<Move key={item.move.url} name={item.move.name} url={item.move.url} />
 									))}
 								</div>
+								
 							</div>
 						</div>
 					</div>
