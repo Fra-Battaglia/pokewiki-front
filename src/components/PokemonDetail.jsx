@@ -14,6 +14,7 @@ function PokemonDetail(props) {
 	const [pokemon_species, set_pokemon_species] = useState(null);
 	const [loading, set_loading] = useState(true);
 	const [shiny, set_shiny] = useState(false);
+	const [evolution_chain, set_evolution_chain] = useState([]);
 	const { pokemonID } = useParams();
 
 
@@ -87,9 +88,10 @@ function PokemonDetail(props) {
 			
 			
 			set_pokemon(varieties_data.data)
-				set_pokemon_species(species_data.data)
-				set_loading(false)
-			})
+			set_pokemon_species(species_data.data)
+			set_evolution_chain(evolutions_data);
+			set_loading(false)
+
 		} catch (error) {
 			console.error(`Errore nel recupero del pokemon:`, error);
 			return null;
@@ -105,7 +107,8 @@ function PokemonDetail(props) {
 
 	function toggleShiny() {set_shiny(!shiny);}
 
-	useEffect(() => {get_pokemon_info();}, []);
+	useEffect(() => {get_pokemon_info();}, [pokemonID]);
+	useEffect(() => {console.log(evolution_chain)}, [evolution_chain]);
 
 	document.title = !loading ?  "PokeWiki - " + toTitleCase(pokemon.name) : "PokeWiki";
 	
@@ -117,17 +120,18 @@ function PokemonDetail(props) {
 					<Header />
 						<div className="container my-8 mx-auto">
 							<div>
-								<Link to={-1}><button className="border border-white bg-black/[.4] flex gap-2 items-center justify-center self-center px-4 py-2 hover:underline" id='io'><FontAwesomeIcon icon={faArrowLeft} /> Back</button></Link>
+								<Link to={-1}><button className="border border-white bg-black/[.4] flex gap-2 items-center justify-center self-center px-4 py-2 mb-4 hover:underline" id='io'><FontAwesomeIcon icon={faArrowLeft} /> Back</button></Link>
 								
 								{/* Pokemon data section */}
 
-								<div className="flex items-start gap-4">
+								<div className="grid grid-cols-3 gap-4">
 
 									{/* Sprite area */}
 
-									<div className="bg-black/[.4] shrink-0 relative">
-										<img src="/src/assets/img/icons/sparks.svg" alt="shiny" id='shiny' className={'absolute top-4 right-4 w-12 m-2 ' + (!shiny ? 'opacity-50' : '')} onClick={toggleShiny} />
-										<img src={!shiny ? pokemon.sprites.other.home.front_default : pokemon.sprites.other.home.front_shiny} alt={pokemon.name} />
+									<div>
+										<div className="bg-black/[.4] shrink-0 p-4 relative">
+											<img src="/src/assets/img/icons/sparks.svg" alt="shiny" id='shiny' className={'absolute top-4 right-4 w-12 m-2 ' + (!shiny ? 'opacity-50' : '')} onClick={toggleShiny} />
+											<img src={!shiny ? pokemon.sprites.other.home.front_default : pokemon.sprites.other.home.front_shiny} alt={pokemon.name} />
 										</div>
 											{evolution_chain.length > 1 ? (
 												<div className="evolutions flex items-center w-full mt-4">
@@ -145,38 +149,45 @@ function PokemonDetail(props) {
 												</div>
 											) : ''}
 									</div>
-
+									
 									{/* Pokemon Info */}
 
-									<div className="pokemon-info grow overflow-auto flex flex-col gap-4">
-										<h3 className='uppercase font-bold text-6xl text-center'>{pokemon.name}</h3>
-										<div className="types flex gap-4 text-2xl mx-auto my-0">
-										{pokemon.types.map((item) => (
-											<div className={"type uppercase rounded-sm px-2 font-bold " + item.type.name} key={item.type.name}>{item.type.name}</div>
-										))}
+									<div className="pokemon-info grow overflow-auto flex flex-col gap-8 col-span-2">
+										<div>
+											{/* Name and Number*/}
+											<h3 className='uppercase font-bold text-6xl text-center'><span className="opacity-50">N°{pokemon.id}</span> {pokemon.name}</h3> 
+
+											{/* Types */}
+											<div className="types flex gap-4 text-2xl mt-4 justify-center items-center">
+												{pokemon.types.map((item) => (
+													<div className={"type uppercase rounded-sm px-2 font-bold " + item.type.name} key={item.type.name}>{item.type.name}</div>
+												))}
+											</div>
 										</div>
-										<p>{pokemon_species.flavor_text_entries.filter((text) => text.language.name == "en")[0].flavor_text}</p>
+										
+										{/* Description */}
+										<p className='text-xl'><strong className='text-xl'>Description:</strong> {pokemon_species.flavor_text_entries.filter((text) => text.language.name == "en")[0].flavor_text}</p>
 
 										{/* Statistics */}
-
-										<h4 className='uppercase font-bold text-4xl text-center'>STATISTICS</h4>
-										<div className="stats grid grid-cols-3 gap-4">
-											{pokemon.stats.map((item) => (
-												<div key={item.stat.name} className="stat">
-													<p className='text-xl'>{item.stat.name}: <strong>{item.base_stat}</strong></p>
-													<div className='bg-black/[.4] h-4'>
-														<div style={{width: item.base_stat / 255 * 100 + "%"}} className={"h-full bg-linear-to-r " + (pokemon.types[0] ? `from-(--type-${pokemon.types[0].type.name})` : "") + " " + (pokemon.types[1] ? `to-(--type-${pokemon.types[1].type.name})` : pokemon.types[0] ? `to-(--type-${pokemon.types[0].type.name})` : "")}></div>
+										<div className="flex flex-col gap-4">
+											{/* <h4 className='uppercase font-bold text-4xl text-center'>STATISTICS</h4> */}
+											<div className="stats grid grid-cols-3 gap-4">
+												{pokemon.stats.map((item) => (
+													<div key={item.stat.name} className="stat text-xl">
+														<strong className='capitalize'>{item.stat.name}: </strong><span>{item.base_stat}</span>
+														<div className='bg-black/[.4] h-4'>
+															<div style={{width: item.base_stat / 255 * 100 + "%"}} className={"h-full bg-linear-to-r " + (pokemon.types[0] ? `from-(--type-${pokemon.types[0].type.name})` : "") + " " + (pokemon.types[1] ? `to-(--type-${pokemon.types[1].type.name})` : pokemon.types[0] ? `to-(--type-${pokemon.types[0].type.name})` : "")}></div>
+														</div>
 													</div>
-												</div>
-											))}
+												))}
+											</div>
 										</div>
-
 									</div>
 								</div>
 
 								{/* Moveset */}
 
-								<h4 className='uppercase font-bold mb-4 text-4xl text-center'>MOVESET</h4>
+								<h4 className='uppercase font-bold mb-8 text-4xl text-center mt-8'>MOVESET</h4>
 								<div className="moves overflow-y-auto grid grid-cols-2 lg:grid-cols-3 gap-4 grow">
 									{pokemon.moves.map((item) => (
 										<Move key={item.move.url} name={item.move.name} url={item.move.url} />

@@ -35,7 +35,7 @@ function Card(props) {
 								<div>Weight</div>
 							</div>
 						</div>
-						<Link to={"/pokemons/" + props.name}><button className="border border-white bg-black/[.4] px-4 py-1 self-center">See more</button></Link>
+						<Link to={"/pokemons/" + props.name}><button className="border border-white bg-black/[.4] px-4 py-1 self-center cursor-pointer">See more</button></Link>
 					</div>
 				</div>
 			</div>
