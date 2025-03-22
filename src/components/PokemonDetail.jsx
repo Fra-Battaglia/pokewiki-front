@@ -19,10 +19,74 @@ function PokemonDetail(props) {
 
 	async function get_pokemon_info() {	
 		try {
-			axios.get('https://pokeapi.co/api/v2/pokemon/' + pokemonID).then(async (response) => {
-				const species_data = await axios.get(response.data.species.url);				
+			const varieties_data = await axios.get('https://pokeapi.co/api/v2/pokemon/' + pokemonID);
+			const species_data = await axios.get(varieties_data.data.species.url);
 
-				set_pokemon(response.data)
+			const evolution_chain_data = await axios.get(species_data.data.evolution_chain.url);
+			const chain = evolution_chain_data.data.chain;
+			// const evolutions = [];
+
+			// (chain.evolves_to.length > 0) ? evolutions.push(chain.evolves_to) : '';
+			// (chain.evolves_to.length > 0 && chain.evolves_to[0].evolves_to.length > 0) ? evolutions.push(chain.evolves_to.evolves_to) : '';
+
+			// console.log(chain.evolves_to);
+			
+			// chain.evolves_to.map((evolution) => {
+			// 	console.log(evolution)
+			// 	evolution.species.url = 1;
+			// });
+
+			// console.log(chain);
+
+			async function evolutions(chain) {
+				let data = [];
+				let base_species = await axios.get(chain.species.url);
+				let base_variety = await axios.get(base_species.data.varieties.filter(variety => variety.is_default).map(variety => variety.pokemon.url));
+				console.log(base_variety.data);
+				
+				let current_stage = [{species: base_species.data, variety: base_variety.data, evolution_details: null}];
+				data.push(current_stage);
+
+				// Evolution data
+				while (chain.evolves_to.length > 0) {
+					let next_stage = await Promise.all(
+						chain.evolves_to.map(async evolution => { 
+
+							// prendi con api i dati dell'evoluzione (species)
+							const evolution_species = await axios.get(evolution.species.url);
+	
+							// prendi con api i dati dell'evoluzione (variety)
+							const evolution_variety = await axios.get(evolution_species.data.varieties.filter(variety => variety.is_default).map(variety => variety.pokemon.url));
+	
+							// nel return ti ritorni i dati dell'evoluzione (presi prima con axios)
+							return {species: evolution_species.data, variety: evolution_variety.data, evolution_details: evolution.evolution_details[0]}
+
+						})
+					);
+					// console.log("NEXT STAGE", next_stage);
+					
+					data.push(next_stage);
+
+					if(chain.evolves_to.length > 1) {
+						chain = { evolves_to: chain.evolves_to.map((evolution) => evolution.evolves_to).flat() };
+						// console.log("CHAIN", chain)
+					} else {
+						chain = chain.evolves_to[0];
+					}
+				}
+
+				// for (let i = 0; i < chain.evolves_to.length; i++) {
+				// 	// data.push(chain.evolves_to[i].species);
+				// 	evolutions(chain.evolves_to[i]);
+				// };
+				return data;
+			}
+			
+			let evolutions_data = await evolutions(chain);
+			// console.log(evolutions_data);
+			
+			
+			set_pokemon(varieties_data.data)
 				set_pokemon_species(species_data.data)
 				set_loading(false)
 			})
@@ -64,6 +128,22 @@ function PokemonDetail(props) {
 									<div className="bg-black/[.4] shrink-0 relative">
 										<img src="/src/assets/img/icons/sparks.svg" alt="shiny" id='shiny' className={'absolute top-4 right-4 w-12 m-2 ' + (!shiny ? 'opacity-50' : '')} onClick={toggleShiny} />
 										<img src={!shiny ? pokemon.sprites.other.home.front_default : pokemon.sprites.other.home.front_shiny} alt={pokemon.name} />
+										</div>
+											{evolution_chain.length > 1 ? (
+												<div className="evolutions flex items-center w-full mt-4">
+													{/* Evolutions */}
+
+													{evolution_chain.map((stage, index) => (
+														<div key={index} className=" flex items-center grow last:grow-0 after:content-[''] after:grow after:border-y-2 after:border-black/[.4] last:after:hidden">
+															{stage.map((evolution) => (
+																<Link to={"/pokemons/" + evolution.variety.name} key={evolution.variety.id} className={'flex items-center evolution p-2 bg-black/[.4] border-2 border-transparent ' + (evolution.variety.id == pokemon.id ? 'border-white' : '')}>
+																	<img src={!shiny ? evolution.variety.sprites.other.home.front_default : evolution.variety.sprites.other.home.front_shiny} alt={evolution.variety.name} className='w-[3em]' />
+																</Link>
+															))}
+														</div>
+													))}
+												</div>
+											) : ''}
 									</div>
 
 									{/* Pokemon Info */}
