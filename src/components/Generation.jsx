@@ -19,7 +19,24 @@ function Generation() {
 			const response = await axios.get('https://pokeapi.co/api/v2/generation/' + generationID);
 			const pokemon_results = response.data.pokemon_species;
 
-			const pokemons_details = await Promise.all(
+			const species_response = await Promise.all(
+				pokemon_results.map( async (pokemon) => {
+					// await new Promise(resolve => setTimeout(resolve, 100));
+					return axios.get(pokemon.url)
+				})
+			)
+			const variety_response = await Promise.all(
+				species_response.map( async (species) => {
+					// await new Promise(resolve => setTimeout(resolve, 100));
+					return axios.get(species.data.varieties.filter(variety => variety.is_default).map(variety => variety.pokemon.url))
+				})
+			)
+
+			const pokemons_details = pokemon_results.map( (pokemon, index) => {
+				return {...variety_response[index].data, species_url: pokemon.url};
+			});
+
+			/*const pokemons_details = await Promise.all(
 				pokemon_results.map(async (pokemon) => {
 					try {
 						const species_response = await axios.get(pokemon.url);
@@ -35,7 +52,7 @@ function Generation() {
 						return null;
 					}
 				})
-			)
+			)*/
 
 			set_pokemons(pokemons_details.filter(Boolean));
 			set_loading(false)
@@ -44,7 +61,7 @@ function Generation() {
 		};
 	}
 
-	useEffect(() => {get_pokemons();}, []);
+	useEffect(() => {get_pokemons();}, [generationID]);
 
 	return (
 		<>
