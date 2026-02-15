@@ -7,6 +7,7 @@ import PokemonDetail from './PokemonDetail.jsx'
 import { useParams } from 'react-router-dom'
 import Header from './header.jsx'
 import Loading from './Loading.jsx'
+import LoadingCard from './LoadingCard.jsx'
 
 function Generation() {
 	const [pokemons, set_pokemons] = useState([]);
@@ -65,30 +66,30 @@ function Generation() {
 
 	return (
 		<>
-			{loading ? (<Loading />) : (
-			<>
-				<Header />
-				<main className='py-8 text-center'>
-					<h1 className="text-4xl font-bold mb-8">POKÉDEX</h1>
-					<div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 container my-0 mx-auto gap-4">
-						{pokemons.sort((a, b) => a.id > b.id ? 1 : -1).map((item) => 
+			<Header />
+			<main className='py-8 text-center'>
+				<h1 className="text-4xl font-bold mb-8">POKÉDEX</h1>
+				<div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 container my-0 mx-auto gap-4">
+					{loading ? (
+						Array.from({ length: 20 }, (_, i) => <LoadingCard key={i} />)
+					) : (
+						pokemons.sort((a, b) => a.id > b.id ? 1 : -1).map((item) => 
 							!item ? (<div>loading...</div>) : (
-							<Card 
-								key={item.id}
-								id={item.id}
-								name={item.name}
-								image={item.sprites.other.home.front_default}
-								types={item.types}
-								height={item.height}
-								weight={item.weight}
-							/>
+								<Card 
+									key={item.id}
+									id={item.id}
+									name={item.name}
+									image={item.sprites.other.home.front_default}
+									types={item.types}
+									height={item.height}
+									weight={item.weight}
+								/>
 							)
-						)}	
-					</div>
-				</main>
-				<footer></footer>
-			</>
-			)}
+						)
+					)}
+				</div>
+			</main>
+			<footer></footer>
 		</>
 	)
 }

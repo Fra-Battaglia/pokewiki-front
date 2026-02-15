@@ -24,7 +24,7 @@ function Card(props) {
 								<div className={"type uppercase rounded-sm px-2 font-bold " + item.type.name} key={item.type.name}>{item.type.name}</div>
 							))}
 						</div>
-						<div className="flex gap-4 justify-center">
+						{/* <div className="flex gap-4 justify-center">
 							<div>
 								<div><FontAwesomeIcon icon={faRulerVertical} /> {props.height}</div>
 								<div>Height</div>
@@ -34,7 +34,7 @@ function Card(props) {
 								<div><FontAwesomeIcon icon={faWeightHanging} /> {props.weight}</div>
 								<div>Weight</div>
 							</div>
-						</div>
+						</div> */}
 						<Link to={"/pokemons/" + props.name}><button className="border border-white bg-black/[.4] px-4 py-1 self-center cursor-pointer">See more</button></Link>
 					</div>
 				</div>
