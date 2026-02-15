@@ -116,7 +116,7 @@ function PokemonDetail(props) {
 		<>
 			{loading ? (<Loading />) : (
 				<section className={"p-0.5 h-screen bg-linear-to-r flex flex-col " + (pokemon.types[0] ? `from-(--type-${pokemon.types[0].type.name})` : "") + " " + (pokemon.types[1] ? `to-(--type-${pokemon.types[1].type.name})` : pokemon.types[0] ? `to-(--type-${pokemon.types[0].type.name})` : "")}>
-					<div className="h-full bg-black/[.8] grow overflow-auto">
+					<div className="h-full bg-black/[.8] grow overflow-auto p-4 lg:p-0">
 					<Header />
 						<div className="container my-8 mx-auto">
 							<div>
@@ -124,11 +124,14 @@ function PokemonDetail(props) {
 								
 								{/* Pokemon data section */}
 
-								<div className="grid grid-cols-3 gap-4">
+								<div className="grid grid-cols-1 lg:grid-cols-3 gap-y-8 lg:gap-x-4">
+
+									{/* Name and Number*/}
+									<h3 className='uppercase font-bold text-4xl text-center block md:hidden w-full'><span className="opacity-50">N°{pokemon.id}</span> {pokemon.name}</h3> 
 
 									{/* Sprite area */}
 
-									<div>
+									<div className='my-0 mx-auto'>
 										<div className="bg-black/[.4] shrink-0 p-4 relative">
 											<img src="/src/assets/img/icons/sparks.svg" alt="shiny" id='shiny' className={'absolute top-4 right-4 w-12 m-2 ' + (!shiny ? 'opacity-50' : '')} onClick={toggleShiny} />
 											<img src={!shiny ? pokemon.sprites.other.home.front_default : pokemon.sprites.other.home.front_shiny} alt={pokemon.name} />
@@ -152,10 +155,10 @@ function PokemonDetail(props) {
 									
 									{/* Pokemon Info */}
 
-									<div className="pokemon-info grow overflow-auto flex flex-col gap-8 col-span-2">
+									<div className="pokemon-info grow overflow-auto flex flex-col gap-8 lg:col-span-2">
 										<div>
 											{/* Name and Number*/}
-											<h3 className='uppercase font-bold text-6xl text-center'><span className="opacity-50">N°{pokemon.id}</span> {pokemon.name}</h3> 
+											<h3 className='uppercase font-bold text-6xl text-center hidden md:block'><span className="opacity-50">N°{pokemon.id}</span> {pokemon.name}</h3> 
 
 											{/* Types */}
 											<div className="types flex gap-4 text-2xl mt-4 justify-center items-center">
@@ -171,7 +174,7 @@ function PokemonDetail(props) {
 										{/* Statistics */}
 										<div className="flex flex-col gap-4">
 											{/* <h4 className='uppercase font-bold text-4xl text-center'>STATISTICS</h4> */}
-											<div className="stats grid grid-cols-3 gap-4">
+											<div className="stats grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
 												{pokemon.stats.map((item) => (
 													<div key={item.stat.name} className="stat text-xl">
 														<strong className='capitalize'>{item.stat.name}: </strong><span>{item.base_stat}</span>
